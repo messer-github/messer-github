@@ -1,0 +1,147 @@
+<?php 
+
+
+/**
+ * Implements hook_block_info().
+ */
+
+function my_tags_block_info () {
+           
+          $blocks = array();
+          $blocks ['my_first_block']=array(
+          'info' => t('My costom block'),
+
+          ); 
+ 
+return $blocks;
+
+}
+
+/**
+* Implements hook_block_view().
+*/ 
+
+
+function my_tags_block_view($delta = '') {
+ 
+  
+
+  $block = array();
+  switch ($delta) {
+    case 'my_first_block':
+      $result = db_query('SELECT COUNT(`entity_id` ) icount, `field_tags_tid`, `taxonomy_term_data`.`name`, `revision_id`
+        FROM  `field_data_field_tags` 
+        INNER JOIN `taxonomy_term_data` 
+        ON `taxonomy_term_data`.`tid`=`field_data_field_tags`.`field_tags_tid`
+        GROUP BY `field_tags_tid`
+        ORDER BY icount DESC 
+        LIMIT 0 , 10');
+
+
+      foreach ($result as $record) {
+        
+        $list[] = l($record->name, 'term_page_custom/'.$record->field_tags_tid);
+
+      }
+     // dpm($list);
+
+      $block['subject'] = t('Popular tags');
+      $block['content'] = theme('item_list', array('items' => $list));;
+      break;
+  }
+
+  return $block;
+}
+
+/**
+* Implements hook_menu()
+*/  
+
+function my_tags_menu(){
+ $items = array();
+
+    $items ['term_page_custom/%'] = array(
+        'title' => 'Helo',    
+        'page callback' => 'my_term_page',
+        'page arguments'=> array(1),
+        'access callback' =>TRUE,
+        );
+
+  //  $items['examples/form'] = array(
+  //   'title' => t('Form Example'),
+  //   'page callback' => 'drupal_get_form',
+  //   'page arguments' => array('frist_form'),
+  //   'access callback' => TRUE
+  // );
+    return $items;
+}
+  
+function my_term_page($id=0) {
+
+$query = new EntityFieldQuery();
+$query->entityCondition('entity_type', 'node');
+$query ->fieldCondition('field_tags','tid', $id);
+     $result = $query -> execute();
+    
+
+ 
+  if (isset($result['node'])){
+    $news_items_nids = array_keys($result['node']);
+    $news_items = entity_load('node',$news_items_nids);
+    dpm($news_items);
+ }
+ 
+
+ foreach ($news_items as $node) {
+  $nodeView = node_view($node, 'teaser');
+  $output[] = render($nodeView); 
+  }
+
+ return theme('item_list', array('items' => $output));
+
+}
+
+// /**
+// *   Define form
+// */
+// function frist_form($form_state){
+
+//  $form['sname']=array(
+//      '#title' => t('youre name'),
+//      '#type' => 'textfield',
+//      '#description' => t('Please enter your name'),
+//   );
+//  $form['submit']=array(
+// '#type' =>'submit',
+// '#value' => t('Send'),
+// );
+
+// $form['copy'] = array(
+//   '#type' =>'checkbox', 
+//   '#title' => t('Send me a copy.'),
+// );
+ 
+//   return $form;
+// }
+        
+// /**
+// *Validation submit
+// */
+
+
+// function frist_form_submit($form, &$form_state){
+
+//  variable_set('site_name', $form_state['values']['sname']);
+   
+// }
+
+// /**
+// *Validation fields
+// */
+
+// function frist_form_validate($form, &$form_state){
+//   dpm($form_state);
+//    if(!preg_match("/^[a-zA-Z0-9]+$/",$form_state['values']['sname']))
+//     form_set_error("sname",$form_state['values']['sname']."is not name");
+
+//  }

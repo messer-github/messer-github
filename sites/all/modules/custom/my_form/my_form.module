@@ -1,0 +1,66 @@
+<?php 
+
+
+
+
+/**
+* Implements hook_menu()
+ */  
+
+function my_form_menu(){
+ $items = array();
+   $items['examples/form'] = array(
+    'title' => t('Form Example'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('frist_form'),
+    'access callback' => TRUE
+  );
+    return $items;
+}
+  
+
+
+/**
+*   Define form
+*/
+function frist_form($form_state){
+
+ $form['sname']=array(
+     '#title' => t('youre name'),
+     '#type' => 'textfield',
+     '#description' => t('Please enter your name'),
+  );
+ $form['submit']=array(
+'#type' =>'submit',
+'#value' => t('Send'),
+);
+
+$form['copy'] = array(
+  '#type' =>'checkbox', 
+  '#title' => t('Send me a copy.'),
+);
+ 
+  return $form;
+}
+        
+/**
+*Validation submit
+*/
+
+
+function frist_form_submit($form, &$form_state){
+
+ variable_set('site_name', $form_state['values']['sname']);
+   
+}
+
+/**
+*Validation fields
+*/
+
+function frist_form_validate($form, &$form_state){
+  dpm($form_state);
+   if(!preg_match("/^[a-zA-Z0-9]+$/",$form_state['values']['sname']))
+    form_set_error("sname",$form_state['values']['sname']."is not name");
+
+ }

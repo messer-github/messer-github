@@ -1,0 +1,4 @@
+name = My blocks
+description = module with costom blocks
+version = 7.x-dev
+core = 7.x

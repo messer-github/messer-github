@@ -1,0 +1,50 @@
+
+.panel-1col {
+/*  overflow: hidden;  */
+ margin-top: 0;
+ padding-top: 0;
+}
+
+.panel-1col .panel-col-top-left .inside {
+  margin: 0;
+}
+
+
+.panel-1col .panel-col-top-left {
+  float: left; 
+  width: 50%;
+}
+.panel-1col .panel-col-top-right {
+  float: left; 
+  width: 50%;
+}
+.panel-1col .panel-col-first , 
+#page-manager-edit .panel-col-first,
+.panel-1col .panel-col-second, 
+#page-manager-edit .panel-col-second,
+.panel-1col .panel-col-third , 
+#page-manager-edit .panel-col-third{
+  float: left; 
+  width: 33.3%;
+}
+.panel-1col .panel-col-top-bottom {
+  float: left; 
+
+  width: 100%;
+}
+
+.center-wrapper {
+
+overflow: hidden;
+clear: both;
+}
+
+
+#panels-edit-display .panel-pane,
+#panels-edit-display .helperclass {
+  margin: .5em;
+}
+
+.panel-1col .panel-separator {
+  margin: 0 0 1em 0;
+}
