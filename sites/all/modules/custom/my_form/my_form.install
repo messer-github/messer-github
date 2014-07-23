@@ -1,0 +1,47 @@
+ 
+<?php
+/**
+ * @file
+ * Installation file for My database module.
+ */
+
+
+ function my_form_schema() {
+     $schema['form_table'] = array(
+       'fields' => array(
+       'id' => array(
+       'type' => 'serial',
+       'unsigned'=> TRUE,
+       'not null' =>TRUE,
+        ),
+        'nume' => array(
+        'type' => 'varchar',
+        'length' => 150,
+        'not null' => TRUE,
+        'default' =>' ',
+        ),
+        'prenume' => array(
+        'type' => 'varchar',
+        'length' => 150,
+        'not null' => TRUE,
+        'default' =>'',
+        ),
+         'virsta' => array(
+         'type'=> 'int',
+         'unsigned' => TRUE,
+         'not null' => TRUE,
+         'default' => 0,
+        ),
+
+         'id_film' => array(
+        'type' => 'varchar',
+        'length' => 150,
+        'not null' => TRUE,
+        'default' =>'',
+        ),
+       ),
+         'primary key' => array('id'),
+      );
+  
+    return $schema;
+}
